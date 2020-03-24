@@ -1,0 +1,19 @@
+{
+  "name": "asimstream",
+  "version": "1.0.0",
+  "description": "ASIMSream",
+  "main": "server.js",
+  "directories": {},
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "4.*",
+    "fs-extra": "7.*",
+    "socket.io": "2.*"
+  },
+  "author": "Krzysztof_Dziardziel",
+  "devDependencies": {
+    "rtcmulticonnection": "^3.6.9"
+  }
+}

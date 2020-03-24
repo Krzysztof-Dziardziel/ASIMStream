@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densityDpi=device-dpi" />
+	<title>ASIMStream</title>
+    <script type="text/javascript" src="./js/socketio2.0.4.min.js"></script>
+    <script src="/lib/RTCMultiConnection.js"></script>
+    <script>
+        var connection = new RTCMultiConnection();
+        var urlParams = new URLSearchParams(window.location.search);
+        var isVideo = urlParams.get('video') || false;
+        var isAudio = urlParams.get('audio') || false;
+        connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
+        connection.session = {
+        audio: isAudio,
+        video: isVideo,
+        };
+        connection.mediaConstraints = {
+        audio: isAudio,
+        video: isVideo,
+        };
+
+        if (DetectRTC.browser.name === 'Firefox' && (isAudio || isVideo)) {
+        connection.mediaConstraints = {
+            audio: isAudio,
+            video: {
+                facingMode: 'user'
+            }
+        };
+        }
+
+        connection.sdpConstraints.mandatory = {
+        OfferToReceiveAudio: true,
+        OfferToReceiveVideo: true,
+        };
+        window.addEventListener('DOMContentLoaded', function () {
+        var videosContainer = document.getElementById('videos-container');
+
+        connection.onstream = function (event) {
+            var video = event.mediaElement;
+            videosContainer.appendChild(video);
+        };
+        connection.openOrJoin('ASIMS');
+    });
+    </script>
+	<link href="./css/main.css" rel="stylesheet">
+</head>
+<body style="position: fixed; margin: 0px; height: 100vh; height: calc(var(--vh, 1vh) * 100); width: 100%;  overflow: hidden;">
+  <div id="videos-container" style="height: 100vh; width: 100%;"></div>
+  </body>
+</html>
